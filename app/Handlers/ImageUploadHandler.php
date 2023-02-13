@@ -11,48 +11,39 @@ class ImageUploadHandler
     // 限制文件后缀名
     protected $allowed_ext = ['png', 'jpg', 'gif', 'jpeg'];
 
-    /**
-     * 图片上传
-     *
-     * @param $file
-     * @param $folder
-     * @param $file_prefix
-     * @param bool $max_width
-     * @return bool|string[]
-     */
-    public function save($file, $folder, $file_prefix, $max_width = false)
-    {
-        // 文件根据类别，时间进行分类
-        $folder_name = "$folder/" . date("Ym/d", time());
+    // public function save($file, $folder, $file_prefix, $max_width = false)
+    // {
+    //     // 文件根据类别，时间进行分类
+    //     $folder_name = "$folder/" . date("Ym/d", time());
 
-        // 拼接存储的物理路径
-        $upload_path = public_path() . '/storage/' . $folder_name;
+    //     // 拼接存储的物理路径
+    //     $upload_path = public_path() . '/storage/' . $folder_name;
 
-        // 获取文件的后缀名，因图片从剪贴板里黏贴时后缀名为空，所以此处确保后缀一直存在
-        $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
+    //     // 获取文件的后缀名，因图片从剪贴板里黏贴时后缀名为空，所以此处确保后缀一直存在
+    //     $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
 
-        // 拼接文件名，加前缀是为了增加辨析度，前缀可以是相关数据模型的 ID
-        $filename = $file_prefix . '_' . time() . '_' . Str::random(10) . '.' . $extension;
+    //     // 拼接文件名，加前缀是为了增加辨析度，前缀可以是相关数据模型的 ID
+    //     $filename = $file_prefix . '_' . time() . '_' . Str::random(10) . '.' . $extension;
 
-        // 如果上传的不是图片将终止操作
-        if (!in_array($extension, $this->allowed_ext)) {
-            return false;
-        }
+    //     // 如果上传的不是图片将终止操作
+    //     if (!in_array($extension, $this->allowed_ext)) {
+    //         return false;
+    //     }
 
-        // 将图片移动到我们的目标存储路径中
-        $file->move($upload_path, $filename);
+    //     // 将图片移动到我们的目标存储路径中
+    //     $file->move($upload_path, $filename);
 
-        // 如果限制了图片宽度，就进行裁剪
-        if ($max_width && $extension != 'gif') {
+    //     // 如果限制了图片宽度，就进行裁剪
+    //     if ($max_width && $extension != 'gif') {
 
-            // 此类中封装的函数，用于裁剪图片
-            $this->reduceSize($upload_path . '/' . $filename, $max_width);
-        }
+    //         // 此类中封装的函数，用于裁剪图片
+    //         $this->reduceSize($upload_path . '/' . $filename, $max_width);
+    //     }
 
-        return [
-            'path' => config('app.url') . "/storage/$folder_name/$filename"
-        ];
-    }
+    //     return [
+    //         'path' => config('app.url') . "/storage/$folder_name/$filename"
+    //     ];
+    // }
 
     public function saveAvatar($file, $folder, $file_prefix, $max_width = false)
     {

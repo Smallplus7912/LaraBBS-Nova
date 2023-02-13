@@ -11,6 +11,8 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "league/flysystem-cached-adapter": "~1.0",
         "mews/captcha": "~3.0",
         "overtrue/laravel-lang": "~4.0",
         "summerblue/laravel-active": "8.*"

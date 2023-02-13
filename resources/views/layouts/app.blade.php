@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSRF Token -->
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('title', 'LaraBBS') - Laravel 进阶教程</title>
+    <title>@yield('title', 'LaraBBS') - Laravel 进阶教程</title>
 
-  <!-- Styles -->
-  <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-</head>
+    @yield('styles')
 
-<body>
-  <div id="app" class="{{ route_class() }}-page">
+  </head>
 
-    @include('layouts._header')
+  <body>
+    <div id="app" class="{{ route_class() }}-page">
 
-    <div class="container">
+      @include('layouts._header')
 
-      @include('shared._messages')
+      <div class="container">
 
-      @yield('content')
+        @include('shared._messages')
 
+        @yield('content')
+
+      </div>
+
+      @include('layouts._footer')
     </div>
 
-    @include('layouts._footer')
-  </div>
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}"></script>
 
-  <!-- Scripts -->
-  <script src="{{ mix('js/app.js') }}"></script>
-</body>
+    @yield('scripts')
 
+  </body>
 </html>

@@ -11,6 +11,7 @@ class ReplyFactory extends Factory
 
     public function definition()
     {
+        //我在这里增加一行，测试一下git pull
         return [
             //回复内容：faker类，sentence方法
             'content' => $this->faker->sentence(),

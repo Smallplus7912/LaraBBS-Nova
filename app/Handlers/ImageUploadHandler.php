@@ -18,7 +18,7 @@ class ImageUploadHandler
 
         // 文件具体存储的物理路径，`public_path()` 获取的是 `public` 文件夹的物理路径。
         // 值如：/home/vagrant/Code/larabbs/public/uploads/images/avatars/201709/21/
-        $upload_path = public_path ().'/storage/'.$folder_name;
+        $upload_path = public_path () . '/storage/' . $folder_name;
                       
                       //public_path() . '/stroage/' . $folder_name;
 
@@ -35,6 +35,7 @@ class ImageUploadHandler
         }
 
         // 将图片移动到我们的目标存储路径中
+        //dd($upload_path);
         $file->move($upload_path, $filename);
 
         return [

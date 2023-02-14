@@ -30,22 +30,22 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(UserRequest $request, ImageUploadHandler $imageUploadHandler, User $user)
+    public function update(UserRequest $request, ImageUploadHandler $uploader, User $user)
     {
         $this->authorize('update', $user);
-        //未知
-        $data = $request->all();       
-        if($request->file('avatar')){
-            $res = Storage::disk('local')->put('/public', $request->file('avatar'));
-            if($res){
-                $data['avatar'] = $res;
+        $data = $request->all();  
+        // $path = $request->file('avatar')->store('avatar');
+        
+        if ($request->avatar) {
+            $result = $uploader->save($request->avatar, 'avatars', $user->id);
+            if ($result) {
+                $data['avatar'] = $result['path'];
             }
-
         }
-        //dd(Storage::disk('local')->url($request->file));     返回/storage/
-        // $user->update($request->all());
-        $user->update($data);
 
+
+
+        $user->update($data);
         return redirect()->route('users.show', $user->id)->with('success', '个人资料更新成功！');
     }
     

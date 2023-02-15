@@ -11,10 +11,10 @@ use Auth;
 
 class ReplyObserver
 {
-    public function creating(Reply $reply){
-        //XSS安全过滤
-        $reply->content = clean($reply->contrnt, 'user_topic_body');
-    }
+    // public function creating(Reply $reply){
+    //     //XSS安全过滤
+    //     $reply->content = clean($reply->contrnt, 'user_topic_body');
+    // }
     
     public function created(Reply $reply){
         if ($reply->topic->user->id != Auth::id()) {    //不要通知话题的作者本人

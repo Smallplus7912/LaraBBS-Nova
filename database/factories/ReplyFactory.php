@@ -16,7 +16,7 @@ class ReplyFactory extends Factory
             //回复内容：faker类，sentence方法
             'content' => $this->faker->sentence(),
             //回复的id：随机数1-62
-            'topic_id' => rand(1,50),
+            'topic_id' => rand(1,20),
             //用户id：1-10随机
             'user_id' => rand(1,10),
         ];

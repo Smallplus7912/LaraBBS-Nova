@@ -7,6 +7,8 @@ use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
+use Vyuldashev\NovaPermission\NovaPermissionTool;
+
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -32,13 +34,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->register();
     }
 
-    /**
-     * Register the Nova gate.
-     *
-     * This gate determines who can access Nova in non-local environments.
-     *
-     * @return void
-     */
+
+    //授权策略，定义谁可以访问nova面板
     protected function gate()
     {
         Gate::define('viewNova', function ($user) {
@@ -77,7 +74,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            (\Vyuldashev\NovaPermission\NovaPermissionTool::make())
+                ->canSee(function($request) {
+                    return $request->user()->can('manage_users');
+                }),
+        ];
     }
 
     /**

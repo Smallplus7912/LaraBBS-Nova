@@ -2,11 +2,25 @@
 
 namespace App\Nova;
 
+use App\Handlers\ImageUploadHandler;
+use App\Nova\Filters\checkRole;
+use App\Nova\Filters\UserCreated;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Vyuldashev\NovaPermission\PermissionBooleanGroup;
+use Vyuldashev\NovaPermission\RoleBooleanGroup;
+use Vyuldashev\NovaPermission\RoleSelect;
 
 class User extends Resource
 {
@@ -24,21 +38,20 @@ class User extends Resource
      */
     public static $title = 'name';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
+    //设置功能分组
+    public static $group = '角色及权限';
+
+    //搜索功能
     public static $search = [
         'id', 'name', 'email',
     ];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    //侧边栏对应名称
+    public static function label(){
+        return '用户';
+    }
+
+
     public function fields(Request $request)
     {
         return [
@@ -46,9 +59,18 @@ class User extends Resource
 
             Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+            // Text::make('Name')
+            //     ->sortable()
+            //     ->rules('required', 'max:255'),
+            Text::make('用户名', function(){
+                return <<<HTML
+                <a herf="/nova/resources/users/{$this->id}" class="no-underline dim text-primary font-bold">
+                    {$this->name}
+            </a>
+            HTML;
+            })->asHtml()
+                ->rules('required','max:255')
+                ->sortable(),
 
             Text::make('Email')
                 ->sortable()
@@ -56,10 +78,29 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Password::make('Password')
+            Password::make('密码','Password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
+
+                MorphToMany::make('角色', 'roles', \Vyuldashev\NovaPermission\Role::class)->canSee(function ($request) {
+                    return $request->user()->can('manage_users');
+                }),
+                MorphToMany::make('权限', 'permissions', \Vyuldashev\NovaPermission\Permission::class)->canSee(function ($request) {
+                    return $request->user()->can('manage_users');
+                }),
+                RoleSelect::make('角色', 'roles')->canSee(function ($request) {
+                    return $request->user()->can('manage_users');
+                }),
+
+                Text::make('操作', function () {
+                    $route = route('users.show', $this->id);
+                    return <<<HTML
+    <a class="btn btn-default btn-primary" href="{$route}" target="_blank">用户详情</a>
+    HTML;
+                })->asHtml(),
+    
+                HasMany::make('话题', 'topics', 'App\Nova\Topics'),
         ];
     }
 

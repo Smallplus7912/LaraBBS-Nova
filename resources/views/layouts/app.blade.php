@@ -34,6 +34,11 @@
 
       @include('layouts._footer')
     </div>
+    
+    {{-- sudo-su管理面板 --}}
+    @if(app()->isLocal())
+      @include('sudosu::user-selector')
+    @endif
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>

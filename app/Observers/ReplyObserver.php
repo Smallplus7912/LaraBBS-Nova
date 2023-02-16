@@ -17,12 +17,17 @@ class ReplyObserver
     // }
     
     public function created(Reply $reply){
-        if ($reply->topic->user->id != Auth::id()) {    //不要通知话题的作者本人
+        //不是数据库迁移时才通知
+        if(! app()->runningInConsole()){
+        //不要通知话题的作者本人
+        if ($reply->topic->user->id != Auth::id()) {
+            //只有数据库类型通知才需提醒，直接发送 Email 或者其他的都 Pass
             if (method_exists(TopicReplied::class, 'toDatabase')) {
-                $reply->topic->user->increment('notification_count');   //只有数据库类型通知才需提醒，直接发送 Email 或者其他的都 Pass
+                $reply->topic->user->increment('notification_count');
             }
             $reply->topic->user->notify(new TopicReplied($reply));
         }
+    }
         $reply->topic->updateReplyCount();
     }
 

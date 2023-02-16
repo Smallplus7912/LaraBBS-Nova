@@ -13,17 +13,19 @@ class UsersTableSeeder extends Seeder
         User::factory()->count(10)->create();
 
         // 单独处理第一个用户的数据
-        $user = User::find(1);
+        $user1 = User::find(1);
         //将一号用户分配站长角色
-        $user->assignRole('Founder');
-        $user->name = 'liu';
-        $user->email = 'summer@example.com';
-        $user->avatar = 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png';
+        
+        $user1->name = 'liu';
+        $user1->email = 'liujialun@lf-network.com';
+        $user1->avatar = 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png';
+        $user1->assignRole('Founder');
 
         //将二号用户分配管理员角色
-        $user = User::find(2);
-        $user->assignRole('Maintainer');
+        $user2 = User::find(2);
+        $user2->assignRole('Maintainer');
 
-        $user->save();
+        $user1->save();
+        $user2->save();
     }
 }

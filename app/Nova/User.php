@@ -29,7 +29,7 @@ class User extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\User::class;
+    public static $model = 'App\Models\User';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,69 +38,80 @@ class User extends Resource
      */
     public static $title = 'name';
 
-    //设置功能分组
+    /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
     public static $group = '角色及权限';
 
-    //搜索功能
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
     public static $search = [
         'id', 'name', 'email',
     ];
 
-    //侧边栏对应名称
-    public static function label(){
+    public static function label()
+    {
         return '用户';
     }
 
-
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+            //Avatar::make('头像', 'avatar')->disk('minio')->path('/wuguofeng/avatar'),
 
-            // Text::make('Name')
-            //     ->sortable()
-            //     ->rules('required', 'max:255'),
-            Text::make('用户名', function(){
+            Text::make('用户名',  function () {
                 return <<<HTML
-                <a herf="/nova/resources/users/{$this->id}" class="no-underline dim text-primary font-bold">
-                    {$this->name}
+            <a href="/nova/resources/users/{$this->id}" class="no-underline dim text-primary font-bold">
+<!--                <img src="{$this->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">-->
+                {$this->name}
             </a>
-            HTML;
+HTML;
             })->asHtml()
-                ->rules('required','max:255')
+                ->rules('required', 'max:255')
                 ->sortable(),
 
-            Text::make('Email')
-                ->sortable()
+            Text::make('邮箱', 'email')
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->updateRules('unique:users,email,{{resourceId}}')
+                ->sortable(),
 
-            Password::make('密码','Password')
+            Password::make('密码', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-                MorphToMany::make('角色', 'roles', \Vyuldashev\NovaPermission\Role::class)->canSee(function ($request) {
-                    return $request->user()->can('manage_users');
-                }),
-                MorphToMany::make('权限', 'permissions', \Vyuldashev\NovaPermission\Permission::class)->canSee(function ($request) {
-                    return $request->user()->can('manage_users');
-                }),
-                RoleSelect::make('角色', 'roles')->canSee(function ($request) {
-                    return $request->user()->can('manage_users');
-                }),
+            MorphToMany::make('角色', 'roles', \Vyuldashev\NovaPermission\Role::class)->canSee(function ($request) {
+                return $request->user()->can('manage_users');
+            }),
+            MorphToMany::make('权限', 'permissions', \Vyuldashev\NovaPermission\Permission::class)->canSee(function ($request) {
+                return $request->user()->can('manage_users');
+            }),
+            RoleSelect::make('角色', 'roles')->canSee(function ($request) {
+                return $request->user()->can('manage_users');
+            }),
 
-                Text::make('操作', function () {
-                    $route = route('users.show', $this->id);
-                    return <<<HTML
-    <a class="btn btn-default btn-primary" href="{$route}" target="_blank">用户详情</a>
-    HTML;
-                })->asHtml(),
-    
-                HasMany::make('话题', 'topics', 'App\Nova\Topics'),
+            Text::make('操作', function () {
+                $route = route('users.show', $this->id);
+                return <<<HTML
+<a class="btn btn-default btn-primary" href="{$route}" target="_blank">用户详情</a>
+HTML;
+            })->asHtml(),
+
+            HasMany::make('话题', 'topics', 'App\Nova\Topics'),
         ];
     }
 
@@ -123,7 +134,9 @@ class User extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new checkRole()
+        ];
     }
 
     /**

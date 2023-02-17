@@ -3,30 +3,26 @@
 namespace App\Nova;
 //Finished
 
-use App\Models\Topic;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Categories extends Resource
+class Links extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Models\Category';
+    public static $model = 'App\Models\Link';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The logical group associated with the resource.
@@ -41,12 +37,12 @@ class Categories extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'description'
+        'title', 'link'
     ];
 
     public static function label()
     {
-        return '分类';
+        return '推荐';
     }
 
     /**
@@ -60,23 +56,9 @@ class Categories extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('名称', 'name')
-                ->rules('required', 'max:255', 'min:2')->sortable(),
+            Text::make('名称', 'title')->sortable(),
 
-            Textarea::make('描述', 'description')
-                ->rules('required', 'min:5', 'max:20')
-                ->alwaysShow()
-                ->showOnIndex()
-                ->showOnCreating()
-                ->showOnUpdating(),
-
-            Number::make('话题', function (){
-               return Topic::query()->where('category_id', $this->id)->count();
-            })->hideFromDetail(),
-
-            Number::make('排序', 'sort')->sortable(),
-
-            HasMany::make('话题', 'topics', 'App\Nova\Topics'),
+            Text::make('链接', 'link')
         ];
     }
 

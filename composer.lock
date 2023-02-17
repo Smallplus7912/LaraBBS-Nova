@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eceda5208da2b1eb029f252f90d40a41",
+    "content-hash": "4c40cd03dd04628a2059e79b9b64358b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1095,6 +1095,51 @@
                 }
             ],
             "time": "2020-12-29T14:50:06+00:00"
+        },
+        {
+            "name": "ek0519/quilljs",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ek0519/nova-quilljs.git",
+                "reference": "abfda9e2f36960df8c982738cc3ef663fa06b7fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ek0519/nova-quilljs/zipball/abfda9e2f36960df8c982738cc3ef663fa06b7fc",
+                "reference": "abfda9e2f36960df8c982738cc3ef663fa06b7fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ek0519\\Quilljs\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ek0519\\Quilljs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/ek0519/nova-quilljs/issues",
+                "source": "https://github.com/ek0519/nova-quilljs/tree/0.5.0"
+            },
+            "time": "2021-11-22T07:38:26+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

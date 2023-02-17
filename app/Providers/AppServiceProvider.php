@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
 		\App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
         \Illuminate\Pagination\Paginator::useBootstrap();
+        \App\Models\Link::observe(\App\Observers\LinkObserver::class);
 
         //
     }

@@ -25,7 +25,7 @@ class SeedRolesAndPermisionsData extends Migration
         Permission::create(['name' => 'edit_settings']);
 
         //创建站长角色
-        $founder = Role::create(['name' => 'Founder']);
+        $founder = Role::create(['name' => 'founder']);
         //赋予站长权限
         $founder -> givePermissionTo('manage_contents');
         $founder -> givePermissionTo('manage_users');

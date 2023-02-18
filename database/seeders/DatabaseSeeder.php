@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RepliesTableSeeder::class);
 
         $this->call(LinksTableSeeder::class);
+        $this->call(NovaSettingsTableSeeder::class);
     }
 }

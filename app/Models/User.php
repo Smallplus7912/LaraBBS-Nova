@@ -70,4 +70,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->unreadNotifications->markAsRead();
     }
 
+
+    //* 判断nova后台中用户是否有操作的权限
+    public function isHasPermission($permission)
+    {
+        return Auth::user()->can($permission);
+    }
+
 }

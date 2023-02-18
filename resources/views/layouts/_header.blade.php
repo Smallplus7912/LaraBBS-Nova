@@ -45,6 +45,15 @@
               {{ Auth::user()->name }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {{-- 管理后台 --}}
+              @can('manage_contents')             
+                <a class="dropdown-item" href="{{ url('/nova') }}">
+                  <i class="fas fa-tachometer-alt mr-2"></i>
+                  Nova后台
+                </a>
+                <div class="dropdown-divider"></div>
+              @endcan
+              {{-- 管理后台 --}}
               <a class="dropdown-item" href="{{ route('users.show', Auth::id()) }}">
                 <i class="far fa-user mr-2"></i>
                 个人中心

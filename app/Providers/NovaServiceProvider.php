@@ -7,7 +7,20 @@ use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
+use App\Http\Controllers\TopicsController;
+use App\Http\Controllers\UsersController;
+use App\Nova\Metrics\NewTopics;
+use App\Nova\Metrics\NewUsers;
+use App\Nova\Metrics\TopicCounts;
+//use App\Nova\Metrics\TopicsPerDay;
+use App\Nova\Metrics\UserCounts;
+//use App\Nova\Metrics\UsersPerDay;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Textarea;
 use Vyuldashev\NovaPermission\NovaPermissionTool;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
+use Coroowicaksono\ChartJsIntegration\LineChart;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -19,6 +32,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+        \OptimistDigital\NovaSettings\NovaSettings::addSettingsFields([
+            Text::make('站点名称', 'admin_name'),
+            Text::make('站长邮箱', 'admin_email'),
+            Textarea::make('SEO - Description', 'seo_description'),
+            Textarea::make('SEO - Keywords ', 'seo_keyword'),
+        ]);
     }
 
     /**
@@ -53,7 +72,56 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+//            (new UserCounts)->width('1/5'),
+            (new NewUsers())->width('1/3'),
+            (new LineChart())
+                ->title('用户增长趋势')
+                ->animations([
+                    'enabled' => true,
+                    'easing' => 'easeinout',
+                ])
+                ->series(array([
+                    'barPercentage' => 0.5,
+                    'label' => getThisWeekStartAndEnd(),
+                    'borderColor' => 'lightgreen',
+                    'data' => getPerDay('this', 'users'),
+                ],[
+                    'barPercentage' => 0.5,
+                    'label' => getLastWeekStartAndEnd(),
+                    'borderColor' => 'orange',
+                    'data' => getPerDay('last', 'users'),
+                ]))
+                ->options([
+                    'xaxis' => [
+                        'categories' => getWeekDays('this')
+                    ],
+                ])
+                ->width('2/3'),
+//            (new TopicCounts())->width('1/5'),
+            (new NewTopics())->width('1/3'),
+            (new LineChart())
+                ->title('话题增长趋势')
+                ->animations([
+                    'enabled' => true,
+                    'easing' => 'easeinout',
+                ])
+                ->series(array([
+                    'barPercentage' => 0.5,
+                    'label' => getThisWeekStartAndEnd(),
+                    'borderColor' => 'lightgreen',
+                    'data' => getPerDay('this', 'topics'),
+                ],[
+                    'barPercentage' => 0.5,
+                    'label' => getLastWeekStartAndEnd(),
+                    'borderColor' => 'orange',
+                    'data' => getPerDay('last', 'topics'),
+                ]))
+                ->options([
+                    'xaxis' => [
+                        'categories' => getWeekDays('this')
+                    ],
+                ])
+                ->width('2/3'),
         ];
     }
 
@@ -78,6 +146,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (\Vyuldashev\NovaPermission\NovaPermissionTool::make())
                 ->canSee(function($request) {
                     return $request->user()->can('manage_users');
+                }),
+            (\OptimistDigital\NovaSettings\NovaSettings::make())
+                ->canSee(function ($request) {
+                    return $request->user()->can('edit_settings');
                 }),
         ];
     }

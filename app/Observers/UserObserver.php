@@ -20,4 +20,11 @@ class UserObserver
     {
         //
     }
+    //删除用户的级联删除
+    public function deleted(User $user)
+    {
+        $topic = Topic::query()->where('user_id', $user->id)->pluck('id');
+        Topic::query()->whereIn('id', $topic)->delete();
+        Reply::query()->whereIn('topic_id', $topic)->delete();
+    }
 }

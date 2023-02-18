@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //站长才可以访问horizon界面
         \Horizon::auth(function ($request){
-            return \Auth::user()->hasRole('Founder');
+            return \Auth::user()->hasRole('founder');
         });
     }
 }

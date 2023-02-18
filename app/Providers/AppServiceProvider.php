@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //只在开发环境下加载sudo.su(切换用户工具)
         if(app()->isLocal()){
+            $this->app->register(TelescopeServiceProvider::class);
             $this->app->register(\VIACreative\SudoSu\ServiceProvider::class);
         }
     }
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
         \Illuminate\Pagination\Paginator::useBootstrap();
         \App\Models\Link::observe(\App\Observers\LinkObserver::class);
+        \App\Models\Category::observe(\App\Observers\CategoryObserver::class);
 
         //
     }

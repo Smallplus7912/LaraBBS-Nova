@@ -18,6 +18,20 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Suenerds\NovaSearchableBelongsToFilter\NovaSearchableBelongsToFilter;
 
+use Laravel\Nova\Fields\Textarea;
+use App\Nova\Filters\checkRole;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Password;
+use Vyuldashev\NovaPermission\PermissionBooleanGroup;
+use Vyuldashev\NovaPermission\RoleBooleanGroup;
+use Vyuldashev\NovaPermission\RoleSelect;
+
 class Topics extends Resource
 {
     /**
@@ -78,28 +92,39 @@ class Topics extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('标题', function (){
-                return <<<HTML
-            <div  class="no-underline dim text-primary font-bold">
-<!--                <img src="{$this->user->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">-->
-                {$this->title}
-            </div>
-HTML;
-            })
+//             Text::make('标题', function (){
+//                 return <<<HTML
+//             <div  class="no-underline dim text-primary font-bold">
+// <!--                <img src="{$this->user->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">-->
+//                 {$this->title}
+//             </div>
+// HTML;
+//             })
+//                 ->asHtml()
+//                 ->rules('required', 'min:4', 'max:255')
+//                 //->alwaysShow()
+//                 ->showOnIndex()
+//                 ->showOnCreating()
+//                 ->showOnUpdating() 
+//                 ->sortable(),
+            Text::make('标题', 'title')
+                ->rules('required', 'min:4', 'max:255')
+                //->alwaysShow()
+                ->showOnIndex()
                 ->showOnCreating()
-                ->showOnUpdating()
-                ->rules('required', 'min:4', 'max:255')->sortable()->asHtml(),
+                ->showOnUpdating() 
+                ->sortable(),
 
             Text::make('作者', function () {
                 return <<<HTML
             <a href="/nova/resources/users/{$this->user->id}" class="no-underline dim text-primary font-bold">
-                <img src="{$this->user->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">
+                <img src="{$this->user->avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">
                 {$this->user->name}
             </a>
 HTML;
             })->asHtml(),
 
-            BelongsTo::make('分类', 'category', 'App\Nova\Categories')->searchable(),
+            BelongsTo::make('分类', 'category', 'App\Nova\Categories'),
 
             Number::make('评论', function () {
                 return Reply::query()->where('topic_id', $this->id)->count();
@@ -119,7 +144,7 @@ HTML;
 
             BelongsTo::make('作者', 'user', 'App\Nova\User')->hideFromDetail()->hideFromIndex(),
 
-            Quilljs::make('excerpt')
+            Quilljs::make('内容','body')
                 //->withFiles('minio', '/wuguofeng/topic')
                 ->placeholder('please enter here')
                 ->height(600)

@@ -4,7 +4,6 @@ namespace App\Nova;
 
 use App\Handlers\ImageUploadHandler;
 use App\Nova\Filters\checkRole;
-use App\Nova\Filters\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
@@ -72,15 +71,24 @@ class User extends Resource
 
             //Avatar::make('头像', 'avatar')->disk('minio')->path('/wuguofeng/avatar'),
 
-            Text::make('用户名',  function () {
+            Text::make('头像',  function () {
                 return <<<HTML
             <a href="/nova/resources/users/{$this->id}" class="no-underline dim text-primary font-bold">
-<!--                <img src="{$this->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">-->
-                {$this->name}
+                <img src="{$this->avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">
+                
             </a>
 HTML;
             })->asHtml()
                 ->rules('required', 'max:255')
+                ->showOnIndex()
+                ->showOnCreating()
+                ->showOnUpdating() 
+                ->sortable(),
+                
+            Text::make('用户名', 'name')
+                ->rules('required', 'max:254')
+                ->creationRules('unique:users,email')
+                ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable(),
 
             Text::make('邮箱', 'email')
@@ -89,11 +97,7 @@ HTML;
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable(),
 
-                Text::make('用户名', 'name')
-                ->rules('required', 'max:254')
-                // ->creationRules('unique:users,email')
-                // ->updateRules('unique:users,email,{{resourceId}}')
-                ->sortable(),
+                
 
             Password::make('密码', 'password')
                 ->onlyOnForms()

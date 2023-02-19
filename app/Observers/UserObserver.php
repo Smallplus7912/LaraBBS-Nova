@@ -2,7 +2,10 @@
 
 namespace App\Observers;
 
+use App\Models\Reply;
+use App\Models\Topic;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored

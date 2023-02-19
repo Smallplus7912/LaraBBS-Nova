@@ -119,10 +119,10 @@ HTML;
 
             BelongsTo::make('作者', 'user', 'App\Nova\User')->hideFromDetail()->hideFromIndex(),
 
-            Quilljs::make('内容')
-                ->withFiles('minio', '/wuguofeng/topic')
+            Quilljs::make('excerpt')
+                //->withFiles('minio', '/wuguofeng/topic')
                 ->placeholder('please enter here')
-                ->height(300)
+                ->height(600)
                 ->alwaysShow()
                 ->rules('required'),
         ];

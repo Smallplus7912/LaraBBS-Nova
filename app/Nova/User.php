@@ -89,6 +89,12 @@ HTML;
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable(),
 
+                Text::make('用户名', 'name')
+                ->rules('required', 'max:254')
+                // ->creationRules('unique:users,email')
+                // ->updateRules('unique:users,email,{{resourceId}}')
+                ->sortable(),
+
             Password::make('密码', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')

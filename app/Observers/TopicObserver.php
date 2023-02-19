@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Topic;
 use App\Jobs\Translateslug;
 use Illuminate\Support\Facades\DB;
+use App\Handlers\SlugTranslateHandler;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored

@@ -94,9 +94,9 @@ HTML;
                 ->alwaysShow()
                 ->rules('required', 'min:4')->hideFromDetail(),
 
-            BelongsTo::make('用户', 'user', 'App\Nova\User')->sortable(),
+            BelongsTo::make('用户', 'user', 'App\Nova\User'),
 
-            BelongsTo::make('话题', 'topic', 'App\Nova\Topics')->sortable(),
+            BelongsTo::make('话题', 'topic', 'App\Nova\Topics'),
         ];
     }
 

@@ -41,6 +41,7 @@ class AddTrixTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('nova_pending_trix_attachments');
+        Schema::dropIfExists('nova_trix_attachments');
     }
 }

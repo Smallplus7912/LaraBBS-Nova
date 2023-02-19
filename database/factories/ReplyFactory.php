@@ -19,6 +19,8 @@ class ReplyFactory extends Factory
             'topic_id' => rand(1,20),
             //用户id：1-10随机
             'user_id' => rand(1,10),
+            'created_at' => $this->faker->dateTimeThisMonth(),
+            'updated_at' => $this->faker->dateTimeThisMonth()            
         ];
     }
 }

@@ -20,6 +20,8 @@ use Laravel\Nova\Fields\Text;
 use Vyuldashev\NovaPermission\PermissionBooleanGroup;
 use Vyuldashev\NovaPermission\RoleBooleanGroup;
 use Vyuldashev\NovaPermission\RoleSelect;
+use Vyuldashev\NovaPermission\Permission;
+use Laravel\Nova\Fields\DateTime;
 
 class User extends Resource
 {
@@ -96,6 +98,11 @@ HTML;
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable(),
+
+            //注册时间
+            DateTime::make('注册时间','created_at')
+                ->sortable(),
+            //注册时间
 
                 
 

@@ -9,7 +9,7 @@ class RepliesTableSeeder extends Seeder
 {
     public function run()
     {
-        Reply::factory()->times(30)->create();
+        Reply::factory()->times(40)->create();
     }
 }
 

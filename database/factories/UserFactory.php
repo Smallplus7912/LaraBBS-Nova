@@ -20,7 +20,6 @@ class UserFactory extends Factory
             'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png',
             'https://cdn.learnku.com/uploads/images/201710/14/1/NDnzMutoxX.png',
         ];
-
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
@@ -29,6 +28,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'introduction' => $this->faker->sentence(),
             'avatar' => $this->faker->randomElement($avatars),
+            'created_at' => $this->faker->dateTimeBetween('2023-01-01', '2023-02-14'),
+            'updated_at' => $this->faker->dateTimeBetween('2023-02-15', 'now')
         ];
     }
 }

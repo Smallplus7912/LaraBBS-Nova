@@ -64,7 +64,7 @@ class Categories extends Resource
                 ->rules('required', 'max:255', 'min:2')->sortable(),
 
             Textarea::make('描述', 'description')
-                ->rules('required', 'min:5', 'max:20')
+                ->rules('required', 'min:1', 'max:20')
                 ->alwaysShow()
                 ->showOnIndex()
                 ->showOnCreating()

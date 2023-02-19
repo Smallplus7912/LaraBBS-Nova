@@ -17,6 +17,10 @@ class TopicPolicy extends Policy
     {
         return $user->isAuthorOf($topic);
     }
+    public function delete(User $user, Topic $topic)
+    {
+        return $user->isAuthorOf($topic);
+    }
     public function create(){}
 
     public function view(){}

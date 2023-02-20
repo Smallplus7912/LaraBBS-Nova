@@ -4,7 +4,7 @@
       <li class="d-flex">
         <div class="">
           <a href="{{ route('users.show', [$topic->user_id]) }}">
-            <img class="media-object img-thumbnail mr-3" style="width: 52px; height: 52px;" src="{{ $topic->user->avatar }}" title="{{ $topic->user->name }}">
+            <img class="media-object img-thumbnail mr-3" style="width: 52px; height: 52px;" src="{{ 'http://avatar86177.oss-cn-hangzhou.aliyuncs.com/'.$topic->user->avatar }}" title="{{ $topic->user->name }}">
           </a>
         </div>
 

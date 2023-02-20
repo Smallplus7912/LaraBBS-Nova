@@ -71,22 +71,7 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Avatar::make('头像', 'avatar')->disk('public'),
-
-//             Text::make('头像',  function () {
-//                 return <<<HTML
-//             <a href="/nova/resources/users/{$this->id}" class="no-underline dim text-primary font-bold">
-//                 <img src="{$this->avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">
-                
-//             </a>
-// HTML;
-//             })->asHtml()
-//                 ->rules('required', 'max:255')
-//                 ->showOnIndex()
-//                 ->showOnCreating()
-//                 ->showOnUpdating() 
-//                 ->sortable(),
-
+            Avatar::make('头像', 'avatar')->disk('oss'),
                 
             Text::make('用户名', 'name')
                 ->rules('required', 'max:254')

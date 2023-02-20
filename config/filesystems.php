@@ -63,6 +63,19 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'oss' => [
+            'driver' => 'oss',
+            'access_key' => 'LTAI5tD1z6oSqY1QDHUhWY9t',
+            'secret_key' => 'lxUtkDm5mmZ2al8NrhhjeWkH2Jx3Wg',
+            'bucket' => 'avatar86177',        
+            'endpoint' => 'oss-cn-hangzhou.aliyuncs.com', // OSS 外网节点或自定义外部域名
+            //'endpoint_internal' => '<internal endpoint [OSS内网节点] 如：oss-cn-shenzheninternal.aliyuncs.com>', // v2.0.4 新增配置属性，如果为空，则默认使用 endpoint 配置
+            'cdnDomain' => '', // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，
+            'ssl' => true, // true to use 'https://' and false to use 'http://'. default isfalse,
+            'isCName' => false, // 是否使用自定义域名,true: 则Storage.url()会使用自定义的cdn或域名 生成文件url， false: 则使用外部节点生成url
+            'debug' => true,
+           ],
+
     ],
 
     /*

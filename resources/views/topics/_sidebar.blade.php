@@ -14,7 +14,7 @@
       @foreach ($active_users as $active_user)
         <a class="d-flex mt-2 text-decoration-none" href="{{ route('users.show', $active_user->id) }}">
           <div class="media-left media-middle me-2 ml-1">
-            <img src="{{ $active_user->avatar }}" width="24px" height="24px" class="media-object">
+            <img src="{{ 'http://avatar86177.oss-cn-hangzhou.aliyuncs.com/' . $active_user->avatar }}" width="24px" height="24px" class="media-object">
           </div>
           <div class="media-body">
             <small class="media-heading text-secondary">{{ $active_user->name }}</small>

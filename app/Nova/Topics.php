@@ -32,6 +32,9 @@ use Vyuldashev\NovaPermission\PermissionBooleanGroup;
 use Vyuldashev\NovaPermission\RoleBooleanGroup;
 use Vyuldashev\NovaPermission\RoleSelect;
 
+use Vyuldashev\NovaPermission\Permission;
+use Laravel\Nova\Fields\DateTime;
+
 class Topics extends Resource
 {
     /**
@@ -92,21 +95,6 @@ class Topics extends Resource
         return [
             ID::make()->sortable(),
 
-//             Text::make('标题', function (){
-//                 return <<<HTML
-//             <div  class="no-underline dim text-primary font-bold">
-// <!--                <img src="{$this->user->full_avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">-->
-//                 {$this->title}
-//             </div>
-// HTML;
-//             })
-//                 ->asHtml()
-//                 ->rules('required', 'min:4', 'max:255')
-//                 //->alwaysShow()
-//                 ->showOnIndex()
-//                 ->showOnCreating()
-//                 ->showOnUpdating() 
-//                 ->sortable(),
             Text::make('标题', 'title')
                 ->rules('required', 'min:4', 'max:255')
                 //->alwaysShow()
@@ -115,10 +103,13 @@ class Topics extends Resource
                 ->showOnUpdating() 
                 ->sortable(),
 
+            Avatar::make('', 'user->avatar')->disk('oss')
+                ->hideWhenUpdating()
+                ->hideWhenCreating(),
+
             Text::make('作者', function () {
                 return <<<HTML
             <a href="/nova/resources/users/{$this->user->id}" class="no-underline dim text-primary font-bold">
-                <img src="{$this->user->avatar}" alt="" width="30" style="border-radius: 50%; vertical-align: middle">
                 {$this->user->name}
             </a>
 HTML;

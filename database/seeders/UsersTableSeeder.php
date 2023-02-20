@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         
         $user1->name = 'liu';
         $user1->email = 'liujialun@lf-network.com';
-        $user1->avatar = 'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png';
+        $user1->avatar = 'avatars/default/founder.png';
         $user1->assignRole('founder');
 
         //将二号用户分配管理员角色

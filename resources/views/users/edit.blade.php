@@ -38,7 +38,7 @@
 
             @if($user->avatar)
               <br>
-              <img class="thumbnail img-responsive" src="{{ $user->avatar }}" width="200" />
+              <img class="thumbnail img-responsive" src="{{ $user->address . $user->avatar }}" width="200" />
             @endif
           </div>
           

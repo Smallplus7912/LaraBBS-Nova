@@ -31,12 +31,11 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(UserRequest $request, ImageUploadHandler $uploader, User $user)
+    public function update(UserRequest $request, User $user)
     {
         $this->authorize('update', $user);
-        $data = $request->all();  
-        // $path = $request->file('avatar')->store('avatar');
-        
+        $data = $request->all();
+
         if ($request->avatar) {
             //将文件赋值给file
             $file = $request->avatar;
@@ -47,18 +46,13 @@ class UsersController extends Controller
             //文件名
             $filename = $file_prefix . '_' . time() . '_' . Str::random(10) . '.' . $extension;
             //保存
-            $upload = Storage::disk('public')->putFileAs('/avatars', $file, $filename);
+            $upload = Storage::disk('oss')->putFileAs('/avatars', $file, $filename);
             //$url = Storage::disk('public')->url('avatars/'. $filename);
+            //保存绝对地址，应用前端显示需要文件的绝对地址
+            $address = 'http://avatar86177.oss-cn-hangzhou.aliyuncs.com/';
+            $data['address'] = $address;
             $data['avatar'] = $upload;
-
-            //$result = $uploader->save($request->avatar, 'avatars', $user->id);
-            // if ($upload) {
-            //     $data['avatar'] = $result['path'];
-            // }
         }
-
-
-
         $user->update($data);
         return redirect()->route('users.show', $user->id)->with('success', '个人资料更新成功！');
     }

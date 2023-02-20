@@ -161,6 +161,7 @@ return [
         Overtrue\LaravelLang\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Iidestiny\LaravelFilesystemOss\OssStorageServiceProvider::class,
 
         /*
          * Package Service Providers...

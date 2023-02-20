@@ -3,7 +3,7 @@
     <li class=" d-flex" name="reply{{ $reply->id }}" id="reply{{ $reply->id }}">
       <div class="media-left">
         <a href="{{ route('users.show', [$reply->user_id]) }}">
-          <img class="media-object img-thumbnail mr-3" alt="{{ $reply->user->name }}" src="{{ $reply->user->avatar }}" style="width:48px;height:48px;" />
+          <img class="media-object img-thumbnail mr-3" alt="{{ $reply->user->name }}" src="{{ 'http://avatar86177.oss-cn-hangzhou.aliyuncs.com/' . $reply->user->avatar }}" style="width:48px;height:48px;" />
         </a>
       </div>
 

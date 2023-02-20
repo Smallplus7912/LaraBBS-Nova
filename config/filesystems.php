@@ -65,8 +65,8 @@ return [
 
         'oss' => [
             'driver' => 'oss',
-            'access_key' => 'LTAI5tD1z6oSqY1QDHUhWY9t',
-            'secret_key' => 'lxUtkDm5mmZ2al8NrhhjeWkH2Jx3Wg',
+            'access_key' => '',
+            'secret_key' => '',
             'bucket' => 'avatar86177',        
             'endpoint' => 'oss-cn-hangzhou.aliyuncs.com', // OSS 外网节点或自定义外部域名
             //'endpoint_internal' => '<internal endpoint [OSS内网节点] 如：oss-cn-shenzheninternal.aliyuncs.com>', // v2.0.4 新增配置属性，如果为空，则默认使用 endpoint 配置

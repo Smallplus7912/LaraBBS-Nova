@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use  Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -37,10 +38,23 @@ class UsersController extends Controller
         // $path = $request->file('avatar')->store('avatar');
         
         if ($request->avatar) {
-            $result = $uploader->save($request->avatar, 'avatars', $user->id);
-            if ($result) {
-                $data['avatar'] = $result['path'];
-            }
+            //将文件赋值给file
+            $file = $request->avatar;
+            //定义文件前缀
+            $file_prefix = $user->id;
+            //后缀名
+            $extension = strtolower($file->getClientOriginalExtension()) ?: 'png';
+            //文件名
+            $filename = $file_prefix . '_' . time() . '_' . Str::random(10) . '.' . $extension;
+            //保存
+            $upload = Storage::disk('public')->putFileAs('/avatars', $file, $filename);
+            //$url = Storage::disk('public')->url('avatars/'. $filename);
+            $data['avatar'] = $upload;
+
+            //$result = $uploader->save($request->avatar, 'avatars', $user->id);
+            // if ($upload) {
+            //     $data['avatar'] = $result['path'];
+            // }
         }
 
 

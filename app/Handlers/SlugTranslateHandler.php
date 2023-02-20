@@ -42,22 +42,8 @@ class SlugTranslateHandler
         $response = $http->get($api.$query);
 
         $result = json_decode($response->getBody(), true);
-
-        // /**
         //dd($result);
-
-        // array:3 [▼
-        //     "from" => "zh"
-        //     "to" => "en"
-        //     "trans_result" => array:1 [▼
-        //         0 => array:2 [▼
-        //             "src" => "XSS 安全漏洞"
-        //             "dst" => "XSS security vulnerability"
-        //         ]
-        //     ]
-        // ]
-
-        // **/
+        //如果翻译功能失效，打印result看报错信息，一般是IP地址变化导致无法连接百度翻译接口，在控制台修改正确的IP地址即可
 
         // 尝试获取获取翻译结果
         if (isset($result['trans_result'][0]['dst'])) {

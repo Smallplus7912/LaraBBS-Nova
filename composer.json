@@ -27,6 +27,7 @@
         "predis/predis": "~1.1",
         "spatie/laravel-permission": "~3.0",
         "suenerds/nova-searchable-belongs-to-filter": "1.0",
+        "summerblue/administrator": "8.*",
         "summerblue/laravel-active": "8.*",
         "titasgailius/search-relations": "^2.0",
         "viacreative/sudo-su": "~1.1",
@@ -83,7 +84,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [   
+    "repositories.nova": [   
     {
         "type": "gitlab",
         "url": "https://git.papamk.com/xgrit/nova"

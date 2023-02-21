@@ -49,13 +49,22 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {{-- 管理后台 --}}
-              @can('manage_contents')             
+              @can('manage_contents')
+              <a class="dropdown-item" href="{{ url(config('administrator.uri')) }}">
+                <i class="fas fa-tachometer-alt mr-2"></i>
+                管理后台
+              </a>
+              <div class="dropdown-divider"></div>
+                
                 <a class="dropdown-item" href="{{ url('/nova') }}">
                   <i class="fas fa-tachometer-alt mr-2"></i>
                   Nova后台
                 </a>
                 <div class="dropdown-divider"></div>
               @endcan
+              {{-- 管理后台 --}}
+              {{--  --}}
+
               {{-- 管理后台 --}}
               <a class="dropdown-item" href="{{ route('users.show', Auth::id()) }}">
                 <i class="far fa-user mr-2"></i>

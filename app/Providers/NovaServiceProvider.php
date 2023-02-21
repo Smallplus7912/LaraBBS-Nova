@@ -57,10 +57,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     //授权策略，定义谁可以访问nova面板
     protected function gate()
     {
-        Gate::define('viewNova', function ($user) {
-            return in_array($user->email, [
-                'liujialun@lf-network.com'
-            ]);
+        Gate::define('viewNova', function ($request) {
+            return Auth::user()->hasRole('founder') || Auth::user()->hasRole('Maintainer') || Auth::user()->hasRole('linshi');
+
+            // function($user)  可以指定邮箱
+            //return in_array($user->email, [
+            //     'liujialun@lf-network.com'
+            // ]);
         });
     }
 
@@ -83,12 +86,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->series(array([
                     'barPercentage' => 0.5,
                     'label' => getThisWeekStartAndEnd(),
-                    'borderColor' => 'lightgreen',
+                    'borderColor' => 'green',
                     'data' => getPerDay('this', 'users'),
                 ],[
                     'barPercentage' => 0.5,
                     'label' => getLastWeekStartAndEnd(),
-                    'borderColor' => 'orange',
+                    'borderColor' => '#ff6f69',
                     'data' => getPerDay('last', 'users'),
                 ]))
                 ->options([

@@ -24,6 +24,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphToMany;
@@ -135,12 +136,21 @@ HTML;
 
             BelongsTo::make('作者', 'user', 'App\Nova\User')->hideFromDetail()->hideFromIndex(),
 
-            Quilljs::make('内容','body')
-                //->withFiles('minio', '/wuguofeng/topic')
-                ->placeholder('please enter here')
-                ->height(600)
-                ->alwaysShow()
-                ->rules('required'),
+            Trix::make('body')
+            ->withFiles('oss')
+            ->alwaysShow(),
+            
+            
+            // ->showOnIndex()
+            //     ->showOnCreating()
+            //     ->showOnUpdating(),
+
+            // Quilljs::make('内容','body')
+            //     //->withFiles('minio', '/wuguofeng/topic')
+            //     ->placeholder('please enter here')
+            //     ->height(600)
+            //     ->alwaysShow()
+            //     ->rules('required'),
         ];
     }
 

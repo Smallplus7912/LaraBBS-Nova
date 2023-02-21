@@ -17,12 +17,13 @@ class UsersTableSeeder extends Seeder
         //将一号用户分配站长角色
         
         $user1->name = 'liu';
-        $user1->email = 'liujialun@lf-network.com';
+        $user1->email = 'founder@lf.com';
         $user1->avatar = 'avatars/default/founder.png';
         $user1->assignRole('founder');
 
         //将二号用户分配管理员角色
         $user2 = User::find(2);
+        $user2->email = 'manager@lf.com';
         $user2->assignRole('Maintainer');
 
         $user1->save();

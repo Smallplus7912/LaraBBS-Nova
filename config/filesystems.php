@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'oss'),
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +68,7 @@ return [
             'access_key' => env('OSS_ACCESS_KEY'),
             'secret_key' => env('OSS_SECRET_KEY'),
             'bucket' => env('OSS_BUCKET'), 
+            //'public_path' => env('OSS_ENDPOINT'),
             // OSS 外网节点或自定义外部域名       
             'endpoint' => env('OSS_ENDPOINT'), 
             // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，

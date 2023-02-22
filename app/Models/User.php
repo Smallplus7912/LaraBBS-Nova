@@ -78,4 +78,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return Auth::user()->can($permission);
     }
 
+    //保存密码设置，后台管理中保存的密码没有加密，所以要进行加密
+    public function setPasswordAttribute($value)
+    {
+        // 如果值的长度等于 60，即认为是已经做过加密的情况
+        if (strlen($value) != 60) {
+
+            // 不等于 60，做密码加密处理
+            $value = bcrypt($value);
+        }
+        //$this->等于$user->，当修改密码时，自动调用setPassworkAttribute方法
+        $this->attributes['password'] = $value;
+    }
+
 }

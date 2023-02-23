@@ -27,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         Category::class => CategoriesPolicy::class,
         Link::class => EditSettingPolicy::class,
         User::class => UserPolicy::class,
+        \Vyuldashev\NovaPermission\Role::class => RolePolicy::class,
+        \Vyuldashev\NovaPermission\Permission::class => PermissionPolicy::class,
     ];
 
     /**

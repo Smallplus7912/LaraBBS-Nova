@@ -28,7 +28,7 @@ class UserPolicy
 
     public function update(User $currentUser, User $user)
     {
-        return $user->isHasPermission('manage_users') || $currentUser->id === $user->id;
+        return $user->isHasPermission('manage_users') && !$user->hasRole('founder');
     }
 
     public function delete(User $currentUser, User $user)

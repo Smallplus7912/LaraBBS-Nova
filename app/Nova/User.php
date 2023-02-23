@@ -81,12 +81,15 @@ class User extends Resource
 
             Text::make('邮箱', 'email')
                 ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}')
+                ->rules(function($request) {return $request->user()->hasRole('founder');})
+                ->updateRules(function($request) {return $request->user()->hasRole('founder');})
+                // ->creationRules('unique:users,email')
+                // ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable(),
 
             //注册时间
             DateTime::make('注册时间','created_at')
+            //->canSee(function ($request) {return $request->user()->hasRole('founder');})
                 ->sortable(),
             //注册时间
 
@@ -94,18 +97,25 @@ class User extends Resource
 
             Password::make('密码', 'password')
                 ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
+                //->canSee(function ($request) {return $request->user()->hasRole('founder');})
+                ->creationRules('required', 'string', 'min:6')
+                ->updateRules('nullable', 'string', 'min:6'),
 
-            MorphToMany::make('角色', 'roles', \Vyuldashev\NovaPermission\Role::class)->canSee(function ($request) {
-                return $request->user()->can('manage_users');
-            }),
-            MorphToMany::make('权限', 'permissions', \Vyuldashev\NovaPermission\Permission::class)->canSee(function ($request) {
-                return $request->user()->can('manage_users');
-            }),
-            RoleSelect::make('角色', 'roles')->canSee(function ($request) {
-                return $request->user()->can('manage_users');
-            }),
+            // MorphToMany::make('角色', 'roles', \Vyuldashev\NovaPermission\Role::class)
+            //     //->canSee(function ($request) {return $request->user()->can('manage_users');})
+            //     //->canSee(function ($request) {return $request->user()->hasRole('founder');})
+            //     ->creationRules(function($request) {return $request->user()->hasRole('founder');})
+            //     ->updateRules(function($request) {return $request->user()->hasRole('founder');}),
+
+            MorphToMany::make('权限', 'permissions', \Vyuldashev\NovaPermission\Permission::class)
+                //->canSee(function ($request) {return $request->user()->can('manage_users');})
+                ->canSee(function ($request) {return $request->user()->hasRole('founder');}),
+
+            RoleSelect::make('角色', 'roles')
+                //->canSee(function ($request) {return $request->user()->can('manage_users');})
+                ->canSee(function ($request) {return $request->user()->hasRole('founder');})
+                ->creationRules(function($request) {return $request->user()->hasRole('founder');})
+                ->updateRules(function($request) {return $request->user()->hasRole('founder');}),
 
             Text::make('操作', function () {
                 $route = route('users.show', $this->id);

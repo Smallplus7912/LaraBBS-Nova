@@ -83,13 +83,6 @@ class Replies extends Resource
                 return $content;
             })->onlyOnIndex(),
 
-            Text::make('内容', function () {
-                return <<<HTML
-                {$this->content}
-HTML;
-
-            })->asHtml()->onlyOnDetail(),
-
             Textarea::make('内容', 'content')
                 ->alwaysShow()
                 ->rules('required', 'min:4')->hideFromDetail(),
@@ -97,6 +90,13 @@ HTML;
             BelongsTo::make('用户', 'user', 'App\Nova\User'),
 
             BelongsTo::make('话题', 'topic', 'App\Nova\Topics'),
+
+            Text::make('内容', function () {
+                return <<<HTML
+                {$this->content}
+HTML;
+
+            })->asHtml()->onlyOnDetail(),
         ];
     }
 
@@ -123,9 +123,9 @@ HTML;
             (new NovaSearchableBelongsToFilter('用户过滤'))
                 ->fieldAttribute('user')
                 ->filterBy('user_id'),
-            (new NovaSearchableBelongsToFilter('话题过滤'))
-                ->fieldAttribute('topic')
-                ->filterBy('topic_id')
+            // (new NovaSearchableBelongsToFilter('话题过滤'))
+            //     ->fieldAttribute('topic')
+            //     ->filterBy('topic_id')
         ];
     }
 

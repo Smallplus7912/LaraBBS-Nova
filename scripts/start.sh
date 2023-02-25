@@ -5,7 +5,7 @@
 
 # 执行migration
 cd /var/www/backend
-php artisan migrate:refresh --seed
+php artisan migrate -f
 if [ ! -f "public/uploads" ] ; then php artisan storage:link; fi
 
 # 下面这2个被注释的命令有助于提高性能，但是可能导致应用不可用，根据需要自己启动

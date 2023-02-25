@@ -1,6 +1,31 @@
-FROM laradock/php-fpm:latest
-
+FROM php:7.4-fpm-alpine
 LABEL maintainer="1239040424@qq.com"
+
+# 安装composer
+COPY scripts/composer.phar /usr/local/bin/composer
+RUN chmod 755 /usr/local/bin/composer
+
+# PHPIZE_DEPS 包含 gcc g++ 等编译辅助类库，完成编译后删除
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && apk add --no-cache libstdc++ libzip-dev vim\
+    && apk update \
+    && pecl install redis-5.3.2 \
+    && pecl install zip \
+    && docker-php-ext-enable redis zip\
+    && apk del $PHPIZE_DEPS
+# docker-php-ext-install 指令已经包含编译辅助类库的删除逻辑
+RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
+    && apk update \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/  \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install -j$(nproc) pdo_mysql \
+    && docker-php-ext-install -j$(nproc) opcache \
+    && docker-php-ext-install -j$(nproc) bcmath
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+#安装supervisor
+RUN apk --update add supervisor
 
 # 将源码拷到镜像中
 COPY . /var/www/backend
@@ -11,12 +36,17 @@ RUN if [ -e .env ] ; then rm .env; fi
 COPY scripts/start.sh /start.sh
 RUN chmod +x /start.sh
 # 用于任务调度的任务
-COPY scripts/crontab /etc/cron.d/www
+COPY scripts/crontab /var/spool/cron/crontabs/root
 # 用于支持worker的启动
+COPY scripts/supervisord.conf /etc/supervisor/supervisord.conf
 ADD ./scripts/worker.conf /etc/supervisor/conf.d/worker.conf
 
+#添加用户，alpine使用的adduser与其他linux的useradd不同。-S为添加系统用户
+RUN adduser -D -H -u 5000 -s /bin/sh www
 # 修改属主，确保与php-fpm的用户一致
-RUN chown -R www /var/www/backend
+RUN chown -R root /var/www/backend
+RUN chmod 777 -R /var/www/backend/storage
+RUN chmod 777 -R /var/www/backend/bootstrap/cache
 
 VOLUME /var/www/backend
 
